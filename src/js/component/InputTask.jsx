@@ -13,7 +13,7 @@ const InputTask = ({ taskVar, handleChangeTask, handleAddTask }) => {
 					name="label"
 					value={taskVar.label}
 					onChange={handleChangeTask}
-					onKeyUp={handleAddTask}
+					onKeyDown={handleAddTask}
 				/>
 			</div>
 		</form>

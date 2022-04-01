@@ -24,7 +24,7 @@ const Home = () => {
 	//PUT
 	const handleAddTask = async (event) => {
 		try {
-			if (taskVar.label.trim() != "" && event.key === "Enter") {
+			if (event.key === "Enter") {
 				let response = await fetch(`${URL_BASE}/arodriguez`, {
 					method: "PUT",
 					headers: {
