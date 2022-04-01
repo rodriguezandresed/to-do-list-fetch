@@ -10,8 +10,8 @@ const InputTask = ({ taskVar, handleChangeTask, handleAddTask }) => {
 					type="text"
 					placeholder="Task to Do!"
 					className="form-control"
-					name="task"
-					value={taskVar.task}
+					name="label"
+					value={taskVar.label}
 					onChange={handleChangeTask}
 					onKeyUp={handleAddTask}
 				/>

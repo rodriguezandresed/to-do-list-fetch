@@ -11,7 +11,7 @@ const ToDoList = ({ taskToDo, handleDelete }) => {
 							key={index}
 							className="list-group-item"
 							onClick={() => handleDelete(index)}>
-							{item.task}
+							{item.label}
 						</li>
 					</div>
 				))}

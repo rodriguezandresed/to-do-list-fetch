@@ -3,11 +3,12 @@ import InputTask from "./InputTask.jsx";
 import ToDoList from "./ToDoList.jsx";
 
 //create your first component
-const URL_BASE = "assets.breatheco.de/apis/fake/todos/user";
+const URL_BASE = "https://assets.breatheco.de/apis/fake/todos/user";
 
 const Home = () => {
 	let initialState = {
-		task: "",
+		label: "",
+		done: false,
 	};
 
 	//objeto de tasks
@@ -17,38 +18,94 @@ const Home = () => {
 	const [error, setError] = useState(false);
 
 	const handleChangeTask = (event) => {
-		setTaskVar({
-			//crea una copia del objeto para que mantenga los valores (el ...array)
-			...taskVar,
-			[event.target.name]: event.target.value,
-		});
+		setTaskVar({ ...taskVar, [event.target.name]: event.target.value });
 	};
 
-	const handleAddTask = (event) => {
-		if (event.key != "Enter") {
-			setTaskToDo([...taskToDo, taskVar]);
-			setTaskVar(initialState);
-			setError(false);
-		} else {
-			setError(true);
+	//PUT
+	const handleAddTask = async (event) => {
+		try {
+			if (taskVar.label.trim() != "" && event.key === "Enter") {
+				let response = await fetch(`${URL_BASE}/arodriguez`, {
+					method: "PUT",
+					headers: {
+						"Content-Type": "application/json",
+					},
+
+					body: JSON.stringify([...taskToDo, taskVar]),
+				});
+				if (response.ok) {
+					getToDos();
+					setError(false);
+					setTaskVar(initialState);
+				} else {
+					console.log(response.status);
+				}
+			} else {
+				setError(true);
+				return;
+			}
+		} catch {
+			console.log(error);
 		}
 	};
 
 	// para borrar
-	const handleDelete = (id) => {
+	const handleDelete = async (id) => {
 		let newTasks = taskToDo.filter((item, index) => index != id);
-		setTaskToDo(newTasks);
+		try {
+			let response = await fetch(`${URL_BASE}/arodriguez`, {
+				method: "PUT",
+				headers: {
+					"Content-Type": "application/json",
+				},
+
+				body: JSON.stringify(newTasks),
+			});
+			let result = await response.json();
+			if (response.ok) {
+				setTaskVar({ label: "", done: false });
+				getToDos();
+			} else {
+				return;
+			}
+		} catch {
+			console.log(error);
+		}
 	};
+
+	// GET DE LA API
 
 	const getToDos = async () => {
 		try {
 			let response = await fetch(`${URL_BASE}/arodriguez`);
 			let data = await response.json();
-			if (!response.ok) {
-				console.log(`Error algo fallo ${response.statusText}`);
-				return;
+			if (response.ok) {
+				setTaskToDo(data);
+			} else {
+				addTasks();
 			}
-			setTaskVar(data);
+		} catch (error) {
+			console.log(error);
+		}
+	};
+
+	//POST
+
+	const addTasks = async () => {
+		try {
+			let response = await fetch(`${URL_BASE}/arodriguez`, {
+				method: "POST",
+				headers: {
+					"Content-Type": "application/json",
+				},
+
+				body: JSON.stringify([]),
+			});
+			if (response.ok) {
+				getToDos();
+			} else {
+				alert(`Error algo fallo ${response.statusText}`);
+			}
 		} catch (error) {
 			console.log(error);
 		}
@@ -57,43 +114,6 @@ const Home = () => {
 	useEffect(() => {
 		getToDos();
 	}, []);
-
-	//PUT
-	fetch("https://assets.breatheco.de/apis/fake/todos/user/arodriguez", {
-		method: "PUT",
-		headers: {
-			"Content-Type": "application/json",
-		},
-
-		body: JSON.stringify([taskVar]),
-	}).then((response) => {
-		response.json().then((data) => {
-			console.log(data);
-		});
-	});
-
-	//GET
-	fetch("https://assets.breatheco.de/apis/fake/todos/user/arodriguez", {
-		method: "GET",
-		body: JSON.stringify(taskVar),
-		headers: {
-			"Content-Type": "application/json",
-		},
-	})
-		.then((resp) => {
-			console.log(resp.ok); // will be true if the response is successfull
-			console.log(resp.status); // the status code = 200 or code = 400 etc.
-			console.log(resp.text()); // will try return the exact result as string
-			return resp.json(); // (returns promise) will try to parse the result as json as return a promise that you can .then for results
-		})
-		.then((data) => {
-			//here is were your code should start after the fetch finishes
-			console.log(data); //this will print on the console the exact object received from the server
-		})
-		.catch((error) => {
-			//error handling
-			console.log(error);
-		});
 
 	return (
 		<>
