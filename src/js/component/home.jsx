@@ -37,6 +37,7 @@ const Home = () => {
 					getToDos();
 					setError(false);
 					setTaskVar(initialState);
+					event.preventDefault();
 				} else {
 					console.log(response.status);
 				}
@@ -118,6 +119,9 @@ const Home = () => {
 	return (
 		<>
 			<div className="container">
+				<div className="d-flex justify-content-center pt-4">
+					<h1>To Do!</h1>
+				</div>
 				<InputTask
 					taskVar={taskVar}
 					handleChangeTask={handleChangeTask}

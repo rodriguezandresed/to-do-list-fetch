@@ -4,11 +4,10 @@ import PropTypes from "prop-types";
 const InputTask = ({ taskVar, handleChangeTask, handleAddTask }) => {
 	return (
 		<form>
-			<div className="form-group my-3">
-				<label>Task to Do</label>
+			<div className="form-group pt-4">
 				<input
 					type="text"
-					placeholder="Task to Do!"
+					placeholder="What needs to be done?"
 					className="form-control"
 					name="label"
 					value={taskVar.label}

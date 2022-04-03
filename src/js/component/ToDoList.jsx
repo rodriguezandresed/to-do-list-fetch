@@ -4,7 +4,7 @@ import PropTypes from "prop-types";
 const ToDoList = ({ taskToDo, handleDelete }) => {
 	return (
 		<div>
-			<ul className="list-group">
+			<ul className="list-group m-0">
 				{taskToDo.map((item, index) => (
 					<div key={index}>
 						<li
