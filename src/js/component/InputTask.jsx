@@ -1,7 +1,12 @@
 import React from "react";
 import PropTypes from "prop-types";
 
-const InputTask = ({ taskVar, handleChangeTask, handleAddTask }) => {
+const InputTask = ({
+	taskVar,
+	handleChangeTask,
+	handleAddTask,
+	handleEvent,
+}) => {
 	return (
 		<form>
 			<div className="form-group pt-4">
@@ -12,7 +17,8 @@ const InputTask = ({ taskVar, handleChangeTask, handleAddTask }) => {
 					name="label"
 					value={taskVar.label}
 					onChange={handleChangeTask}
-					onKeyDown={handleAddTask}
+					onKeyUp={handleAddTask}
+					onKeyDown={handleEvent}
 				/>
 			</div>
 		</form>

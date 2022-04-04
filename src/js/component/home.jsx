@@ -21,6 +21,13 @@ const Home = () => {
 		setTaskVar({ ...taskVar, [event.target.name]: event.target.value });
 	};
 
+	const handleEvent = (event) => {
+		if (event.key === "Enter") {
+			event.preventDefault();
+		} else {
+		}
+	};
+
 	//PUT
 	const handleAddTask = async (event) => {
 		try {
@@ -37,7 +44,6 @@ const Home = () => {
 					getToDos();
 					setError(false);
 					setTaskVar(initialState);
-					event.preventDefault();
 				} else {
 					console.log(response.status);
 				}
@@ -126,6 +132,7 @@ const Home = () => {
 					taskVar={taskVar}
 					handleChangeTask={handleChangeTask}
 					handleAddTask={handleAddTask}
+					handleEvent={handleEvent}
 				/>
 				<ToDoList taskToDo={taskToDo} handleDelete={handleDelete} />
 			</div>
